@@ -17,6 +17,10 @@ if(result)
   message(FATAL_ERROR "Build step for glfw failed: ${result}")
 endif()
 
+add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/glfw-src
+                 ${CMAKE_CURRENT_BINARY_DIR}/glfw-build
+                 EXCLUDE_FROM_ALL)
+
 # Download and unpack googletest at configure time
 configure_file(external/GoogleTest/CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -49,10 +53,7 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
   include_directories("${gtest_SOURCE_DIR}/include")
 endif()
 
-#set(HEADER_FILES inc/Disassembler.h inc/Disassembler8080.h)
-#set(SOURCE_FILES src/Main.cpp src/Disassembler8080.cpp)
-#add_executable(Disassembler ${SOURCE_FILES} ${HEADER_FILES})
-#target_include_directories(Disassembler PUBLIC inc/ PUBLIC external/cxxopts/include/)
+add_subdirectory(src)
 
 #add_executable(DisassemblerTest test/Main.cpp)
 #target_link_libraries(DisassemblerTest gtest_main)
