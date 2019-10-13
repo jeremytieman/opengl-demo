@@ -1,46 +1,48 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <../include/init.h>
 #include <iostream>
+#include <string>
+#include <sstream>
 
-void error_callback(int error, const char* description)
+namespace DGE = DragonGameEngine;
+
+unsigned long frameCount = 0UL;
+double startTime = 0.0;
+std::string windowTitle = "OpenGL Demo";
+int width = 1280;
+int height = 960;
+
+void initCallback()
 {
-    std::cerr << "Error " << error << ": " << description << "\n";
+    glClearColor(0.0f, 0.0f, 0.5f, 0.0f);
+}
+
+void framesPerSecondCalculator()
+{
+    if (0.0 == startTime)
+    {
+        startTime = glfwGetTime();
+        return;
+    }
+
+    auto curTime = glfwGetTime();
+    if ((curTime - startTime) < 0.25) return;
+    std::stringstream newTitle(windowTitle);
+    newTitle << ": " << frameCount * 4 << " Frames Per Second @ " << width << " x " << height;
+    DGE::setWindowTitle(newTitle.str());
+    frameCount = 0;
+    startTime = curTime;
+}
+
+void mainCallback()
+{
+    ++frameCount;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    framesPerSecondCalculator();
 }
 
 int main()
 {
-    glfwSetErrorCallback(error_callback);
-    if (!glfwInit()) return -1;
-    auto* window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
-    return 0;
+    return DGE::init(width, height, windowTitle, initCallback, mainCallback);
 }
