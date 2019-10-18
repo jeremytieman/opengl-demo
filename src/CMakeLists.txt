@@ -1,5 +1,5 @@
-set(HEADER_FILES ../include/glad/glad.h ../include/init.h)
-set(SOURCE_FILES Main.cpp glad.c init.cpp)
+set(HEADER_FILES ../include/glad/glad.h ../include/init.h ../include/math.h)
+set(SOURCE_FILES Main.cpp glad.c init.cpp math.cpp)
 
 add_executable(Demo ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(Demo PUBLIC ${PROJECT_BINARY_DIR}/glfw-src/include/)

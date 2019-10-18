@@ -13,7 +13,12 @@ namespace DragonGameEngine
         std::cerr << "Error " << error << ": " << description << "\n";
     }
 
-    int init(const int width, const int height, const std::string& windowTitle, DGEinitfunc initFunc, DGEmainfunc mainFunc)
+    int init(const int width,
+        const int height,
+        const std::string& windowTitle,
+        DGEinitfunc initFunc,
+        DGEmainfunc mainFunc,
+        DGEexitfunc exitFunc)
     {
         glfwSetErrorCallback(error_callback);
         if (!glfwInit()) return -1;
@@ -55,6 +60,7 @@ namespace DragonGameEngine
             glfwPollEvents();
         }
 
+        exitFunc();
         glfwTerminate();
         return 0;
     }
