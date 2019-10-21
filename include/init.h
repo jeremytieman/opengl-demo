@@ -9,10 +9,10 @@ namespace DragonGameEngine
     typedef void (* DGEexitfunc)();
 
     int init(const int width,
-     const int height,
-     const std::string& windowTitle,
-     DGEinitfunc initFunc,
-     DGEmainfunc mainFunc,
-     DGEexitfunc exitFunc);
+        const int height,
+        const std::string& windowTitle,
+        DGEinitfunc initFunc,
+        DGEmainfunc mainFunc,
+        DGEexitfunc exitFunc);
     void setWindowTitle(const std::string& newTitle);
 }

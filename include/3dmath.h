@@ -34,7 +34,4 @@ namespace DragonGameEngine::Math
         float near_plane,
         float far_plane
     );
-
-    void ExitOnGLError(const char* error_message);
-    GLuint LoadShader(const char* filename, GLenum shader_type);
 }

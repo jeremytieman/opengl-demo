@@ -1,10 +1,7 @@
-#include "../include/math.h"
+#include "../include/3dmath.h"
 
 #include <cmath>
 #include <cstring>
-#include <glad/glad.h>
-#include <iostream>
-#include <string>
 
 namespace DragonGameEngine::Math
 {
@@ -33,10 +30,10 @@ namespace DragonGameEngine::Math
     Matrix MultiplyMatrices(const Matrix& m1, const Matrix& m2)
     {
         Matrix out = IDENTITY_MATRIX;
-        unsigned int row, column, row_offset;
+        //unsigned int row, column, row_offset;
 
         for (unsigned int row = 0, row_offset = row * 4; row < 4; ++row, row_offset = row * 4)
-            for (column = 0; column < 4; ++column)
+            for (unsigned int column = 0; column < 4; ++column)
                 out.m[row_offset + column] =
                     (m1.m[row_offset + 0] * m2.m[column + 0]) +
                     (m1.m[row_offset + 1] * m2.m[column + 4]) +
@@ -129,63 +126,4 @@ namespace DragonGameEngine::Math
         
         return out;
     }
-
-    void ExitOnGLError(const std::string& error_message)
-    {
-        const GLenum ErrorValue = glGetError();
-
-        if (ErrorValue != GL_NO_ERROR)
-        {
-            std::cerr << error_message << ": " << ErrorValue << " \n";
-            exit(-1);
-        }
-    }
-
-GLuint LoadShader(const std::string& filename, GLenum shader_type)
-{
-    GLuint shader_id = 0;
-    FILE* file;
-    long file_size = -1;
-    char* glsl_source;
-
-  if (NULL != (file = fopen(filename, "rb")) &&
-    0 == fseek(file, 0, SEEK_END) &&
-    -1 != (file_size = ftell(file)))
-  {
-    rewind(file);
-    
-    if (NULL != (glsl_source = (char*)malloc(file_size + 1)))
-    {
-      if (file_size == (long)fread(glsl_source, sizeof(char), file_size, file))
-      {
-        glsl_source[file_size] = '\0';
-
-        if (0 != (shader_id = glCreateShader(shader_type)))
-        {
-          glShaderSource(shader_id, 1, &glsl_source, NULL);
-          glCompileShader(shader_id);
-          ExitOnGLError("Could not compile a shader");
-        }
-        else
-          fprintf(stderr, "ERROR: Could not create a shader.\n");
-      }
-      else
-        fprintf(stderr, "ERROR: Could not read file %s\n", filename);
-
-      free(glsl_source);
-    }
-    else
-      fprintf(stderr, "ERROR: Could not allocate %i bytes.\n", file_size);
-
-    fclose(file);
-  }
-  else
-  {
-    if (NULL != file)
-      fclose(file);
-    fprintf(stderr, "ERROR: Could not open file %s\n", filename);
-  }
-
-  return shader_id;
-}
 }

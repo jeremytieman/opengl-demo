@@ -372,4 +372,5 @@ void exitCallback()
 int main()
 {
     return DGE::init(width, height, windowTitle, initCallback, mainCallback, exitCallback);
+    return 0;
 }

@@ -37,7 +37,7 @@ namespace DragonGameEngine
             return -1;
         }
 
-        /* Make the window's context current */
+        // Make the window's context current
         glfwMakeContextCurrent(window);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -48,15 +48,15 @@ namespace DragonGameEngine
 
         initFunc();
 
-        /* Loop until the user closes the window */
+        // Loop until the user closes the window
         while (!glfwWindowShouldClose(window))
         {
             mainFunc();
 
-            /* Swap front and back buffers */
+            // Swap front and back buffers
             glfwSwapBuffers(window);
 
-            /* Poll for and process events */
+            // Poll for and process events
             glfwPollEvents();
         }
 
