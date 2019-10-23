@@ -6,3 +6,7 @@ target_include_directories(Demo PUBLIC ${PROJECT_BINARY_DIR}/glfw-src/include/)
 target_include_directories(Demo PUBLIC ../include/)
 target_link_libraries(Demo PUBLIC glfw)
 set_target_properties(Demo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin/)
+
+add_custom_command(TARGET Demo POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_SOURCE_DIR}/shaders $<TARGET_FILE_DIR:Demo>/shaders)

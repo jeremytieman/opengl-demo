@@ -1,11 +1,14 @@
+#include <filesystem>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <../include/init.h>
+#include <../include/util.h>
 #include <iostream>
 #include <string>
 #include <sstream>
 
 namespace DGE = DragonGameEngine;
+namespace fs = std::filesystem;
 
 unsigned long frameCount = 0UL;
 double startTime = 0.0;
@@ -22,6 +25,7 @@ GLuint VaoId;
 //GLuint ColorBufferId;
 GLuint BufferId;
 GLuint IndexBufferId;
+fs::path exe;
 
 typedef struct
 {
@@ -29,44 +33,22 @@ typedef struct
     float RGBA[4];
 } Vertex;
 
-const GLchar* VertexShader =
-{
-    "#version 400\n"\
-
-    "layout(location=0) in vec4 in_Position;\n"\
-    "layout(location=1) in vec4 in_Color;\n"\
-    "out vec4 ex_Color;\n"\
-
-    "void main(void)\n"\
-    "{\n"\
-    "  gl_Position = in_Position;\n"\
-    "  ex_Color = in_Color;\n"\
-    "}\n"
-};
-
-const GLchar* FragmentShader =
-{
-    "#version 400\n"\
-
-    "in vec4 ex_Color;\n"\
-    "out vec4 out_Color;\n"\
-
-    "void main(void)\n"\
-    "{\n"\
-    "  out_Color = ex_Color;\n"\
-    "}\n"
-};
-
 void CreateShaders()
 {
     GLenum ErrorCheckValue = glGetError();
 
     VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(VertexShaderId, 1, &VertexShader, NULL);
+    const auto VertexShaderPath = exe.parent_path() / "shaders/vertex.glsl";
+    auto VertexShader = DragonGameEngine::Util::getFileContents(VertexShaderPath.string());
+    auto VertextShaderPtr = VertexShader.c_str();
+    glShaderSource(VertexShaderId, 1, &VertextShaderPtr, NULL);
     glCompileShader(VertexShaderId);
 
     FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(FragmentShaderId, 1, &FragmentShader, NULL);
+    auto FragmentShaderPath = exe.parent_path() / "shaders/fragment.glsl";
+    auto FragmentShader = DragonGameEngine::Util::getFileContents(FragmentShaderPath.string());
+    auto FragmentShaderPtr = FragmentShader.c_str();
+    glShaderSource(FragmentShaderId, 1, &FragmentShaderPtr, NULL);
     glCompileShader(FragmentShaderId);
 
     ProgramId = glCreateProgram();
@@ -369,8 +351,8 @@ void exitCallback()
     DestroyVBO();
 }
 
-int main()
+int main(int argc, char** argv)
 {
+    exe = argv[0];
     return DGE::init(width, height, windowTitle, initCallback, mainCallback, exitCallback);
-    return 0;
 }
