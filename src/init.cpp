@@ -7,18 +7,25 @@
 namespace DragonGameEngine
 {
     GLFWwindow* window = nullptr;
+    DGEreshapefunc reshapeFunc = nullptr;
 
     void error_callback(int error, const char* description)
     {
         std::cerr << "Error " << error << ": " << description << "\n";
     }
 
+    void framebufferSizeCallback(GLFWwindow* window, int width, int height)
+    {
+        if (reshapeFunc) reshapeFunc(width, height);
+    }
+
     int init(const int width,
         const int height,
         const std::string& windowTitle,
-        DGEinitfunc initFunc,
-        DGEmainfunc mainFunc,
-        DGEexitfunc exitFunc)
+        const DGEreshapefunc reshapeFunc,
+        const DGEinitfunc initFunc,
+        const DGEmainfunc mainFunc,
+        const DGEexitfunc exitFunc)
     {
         glfwSetErrorCallback(error_callback);
         if (!glfwInit()) return -1;
@@ -39,6 +46,9 @@ namespace DragonGameEngine
 
         // Make the window's context current
         glfwMakeContextCurrent(window);
+
+        DragonGameEngine::reshapeFunc = reshapeFunc;
+        glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {

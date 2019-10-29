@@ -21,12 +21,12 @@ namespace DragonGameEngine::Math
     float DegreesToRadians(float degrees);
     float RadiansToDegrees(float radians);
 
-    Matrix MultiplyMatrices(const Matrix* m1, const Matrix* m2);
-    void RotateAboutX(Matrix* m, float angle);
-    void RotateAboutY(Matrix* m, float angle);
-    void RotateAboutZ(Matrix* m, float angle);
-    void ScaleMatrix(Matrix* m, float x, float y, float z);
-    void TranslateMatrix(Matrix* m, float x, float y, float z);
+    Matrix MultiplyMatrices(const Matrix& m1, const Matrix& m2);
+    void RotateAboutX(Matrix& m, float angle);
+    void RotateAboutY(Matrix& m, float angle);
+    void RotateAboutZ(Matrix& m, float angle);
+    void ScaleMatrix(Matrix& m, float x, float y, float z);
+    void TranslateMatrix(Matrix& m, float x, float y, float z);
 
     Matrix CreateProjectionMatrix(
         float fovy,
