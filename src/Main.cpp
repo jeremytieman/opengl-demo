@@ -1,10 +1,10 @@
 #include <filesystem>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <../include/3dmath.h>
-#include <../include/init.h>
-#include <../include/ogl.h>
-#include <../include/util.h>
+#include <3dmath.h>
+#include <init.h>
+#include <ogl.h>
+#include <util.h>
 #include <iostream>
 #include <string>
 #include <sstream>

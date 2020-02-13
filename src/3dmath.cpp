@@ -1,4 +1,4 @@
-#include "../include/3dmath.h"
+#include <3dmath.h>
 
 #include <cmath>
 #include <cstring>

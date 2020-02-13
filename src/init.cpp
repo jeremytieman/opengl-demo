@@ -1,4 +1,4 @@
-#include "../include/init.h"
+#include <init.h>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

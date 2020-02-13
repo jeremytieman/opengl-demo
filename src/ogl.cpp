@@ -1,10 +1,10 @@
-#include "../include/ogl.h"
+#include <ogl.h>
 
 #include <glad/glad.h>
 #include <iostream>
 #include <string>
 
-#include "../include/util.h"
+#include <util.h>
 
 namespace DGE = DragonGameEngine;
 

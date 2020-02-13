@@ -1,10 +1,7 @@
-set(HEADER_FILES ../include/glad/glad.h ../include/init.h ../include/util.h ../include/3dmath.h ../include/ogl.h)
 set(SOURCE_FILES Main.cpp glad.c init.cpp util.cpp 3dmath.cpp ogl.cpp)
-
-add_executable(Demo ${SOURCE_FILES} ${HEADER_FILES})
-target_include_directories(Demo PUBLIC ${PROJECT_BINARY_DIR}/glfw-src/include/)
-target_include_directories(Demo PUBLIC ../include/)
-target_link_libraries(Demo PUBLIC glfw)
+add_executable(Demo ${SOURCE_FILES})
+target_include_directories(Demo PRIVATE ${CMAKE_SOURCE_DIR}/inc/ PRIVATE ${PROJECT_BINARY_DIR}/glfw-src/include/)
+target_link_libraries(Demo PRIVATE glfw)
 set_target_properties(Demo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin/)
 
 add_custom_command(TARGET Demo POST_BUILD
