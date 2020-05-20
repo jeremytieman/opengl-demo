@@ -1,5 +1,8 @@
 #include <init.h>
 
+#include <imgui.h>
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -22,6 +25,7 @@ namespace DragonGameEngine
     int init(const int width,
         const int height,
         const std::string& windowTitle,
+        const bool initDearImGui,
         const DGEreshapefunc reshapeFunc,
         const DGEinitfunc initFunc,
         const DGEmainfunc mainFunc,
@@ -52,8 +56,31 @@ namespace DragonGameEngine
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
-            std::cout << "Failed to initialize GLAD" << std::endl;
+            std::cerr << "Failed to initialize GLAD\n";
             return -1;
+        }
+
+        if (initDearImGui)
+        {
+          IMGUI_CHECKVERSION();
+          ImGui::CreateContext();
+          ImGuiIO &io = ImGui::GetIO();
+
+          if (!ImGui_ImplGlfw_InitForOpenGL(window, true))
+          {
+            std::cerr << "Failed to initialize ImGui GLFW for OpenGL\n";
+            return -1;
+          }
+
+          const char *glsl_version = "#version 400";
+          
+          if (!ImGui_ImplOpenGL3_Init(glsl_version))
+          {
+            std::cerr << "Failed to initialize ImGui OpenGL 3\n";
+            return -1;
+          }
+
+          ImGui::StyleColorsDark();
         }
 
         initFunc();
@@ -71,6 +98,14 @@ namespace DragonGameEngine
         }
 
         exitFunc();
+
+        if (initDearImGui)
+        {
+          ImGui_ImplOpenGL3_Shutdown();
+          ImGui_ImplGlfw_Shutdown();
+          ImGui::DestroyContext();
+        }
+
         glfwTerminate();
         return 0;
     }

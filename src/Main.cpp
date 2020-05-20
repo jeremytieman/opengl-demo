@@ -1,4 +1,7 @@
 #include <filesystem>
+#include <imgui.h>
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <3dmath.h>
@@ -438,7 +441,18 @@ void mainCallback()
 {
     ++frameCount;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
     DrawCube();
+    ImGui::Begin("Demo Window");
+    ImGui::Button("Hello");
+    ImGui::End();
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     //glDrawArrays(GL_TRIANGLES, 0, 3);
     //glDrawArrays(GL_TRIANGLES, 0, 6);
     //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -526,6 +540,7 @@ int main(int argc, char** argv)
     return DGE::init(currentWidth,
         currentHeight,
         windowTitle,
+        true,
         reshapeCallback,
         initCallback,
         mainCallback,

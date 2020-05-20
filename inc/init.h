@@ -12,6 +12,7 @@ namespace DragonGameEngine
     int init(const int width,
         const int height,
         const std::string& windowTitle,
+        const bool initDearImGui,
         const DGEreshapefunc reshapeFunc,
         const DGEinitfunc initFunc,
         const DGEmainfunc mainFunc,
